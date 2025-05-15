@@ -162,7 +162,7 @@ To display a user's profile you need to a token that has not expired.
 Then you can use:
 
 ```sh
-curl -H "X-TOKEN: 6802cf44ee8e475e94276d07f03a86e2" http://localhost:4000/students/api/user
+curl -H "X-Token: 6802cf44ee8e475e94276d07f03a86e2" http://localhost:4000/students/api/user
 ```
 
 Note that this API call does not require the `-X POST` flag.
@@ -217,3 +217,54 @@ As you can see, all of the information is stored in the clear; there
 is no encryption or password hashing.  If a hacker was to compromise
 the database, they could easily run a similar program to retrieve all
 of the users personal information and passwords.
+
+### Work done by Karim Khidr
+
+# Cyber Students – Secure Authentication System
+
+This project is a secure user management system built with Tornado (Python) and MongoDB. It implements GDPR-compliant registration, login, token-based authentication, and logout functionality with full encryption of personal data.
+
+## Features
+
+- **Secure Registration**
+  - Passwords hashed with PBKDF2-HMAC-SHA256 + salt
+  - All PII (email, name, DOB, phone, address, disabilities) encrypted with AES-GCM
+
+- **Login**
+  - Case-insensitive email matching via `email_hash`
+  - Password verification using original salt and hash
+
+- **Token-Based Authentication**
+  - Tokens issued on login and stored securely
+  - `X-Token` header required for all authenticated endpoints
+
+- **Logout**
+  - Token is invalidated on logout
+  - Idempotent logout (safe to call multiple times)
+
+- **GDPR Compliance**
+  - No PII exposed in responses
+  - Encrypted-at-rest personal data
+
+## Endpoints
+
+| Method | Endpoint                    | Description             |
+|--------|-----------------------------|-------------------------|
+| POST   | `/students/api/registration`| Register new user       |
+| POST   | `/students/api/login`       | Log in user             |
+| POST   | `/students/api/logout`      | Log out user by token   |
+| GET    | `/students/api/user`        | View user profile       |
+
+## Test Coverage
+
+- Full suite under `test/`
+- All tests pass as of latest commit:
+  - Registration (including duplicates and missing fields)
+  - Login (case insensitive)
+  - Logout (valid, invalid, repeat)
+  - User profile
+
+## Running Tests
+
+```bash
+python run_test.py

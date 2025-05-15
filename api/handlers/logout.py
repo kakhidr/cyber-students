@@ -8,6 +8,8 @@ class LogoutHandler(AuthHandler):
     @authenticated
     @coroutine
     def post(self):
+        self.response = {}
+
         yield self.db.users.update_one({
             'email': self.current_user['email'],
         }, {
@@ -16,7 +18,10 @@ class LogoutHandler(AuthHandler):
             }
         })
 
+        print(f"User {self.current_user['email']} logged out.")  ### Logout statement.
+
         self.current_user = None
 
         self.set_status(200)
+        self.response['message'] = "Successfully logged out."
         self.write_json()

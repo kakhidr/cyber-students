@@ -162,7 +162,7 @@ To display a user's profile you need to a token that has not expired.
 Then you can use:
 
 ```sh
-curl -H "X-TOKEN: d4a5d8b20fe143b7b92e4fba92d409be" http://localhost:4000/students/api/user
+curl -H "X-TOKEN: 6802cf44ee8e475e94276d07f03a86e2" http://localhost:4000/students/api/user
 ```
 
 Note that this API call does not require the `-X POST` flag.

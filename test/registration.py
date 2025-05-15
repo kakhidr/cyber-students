@@ -19,40 +19,48 @@ class RegistrationHandlerTest(BaseTest):
     def test_registration(self):
         email = 'test@test.com'
         display_name = 'testDisplayName'
-
         body = {
-          'email': email,
-          'password': 'testPassword',
-          'displayName': display_name
+            'email': email,
+            'password': 'testPassword',
+            'displayName': display_name,
+            'dob': '2000-01-01',
+            'address': 'Dublin',
+            'phone': '+353123456789',
+            'disabilities': ['sight']
         }
 
         response = self.fetch('/registration', method='POST', body=dumps(body))
         self.assertEqual(200, response.code)
 
         body_2 = json_decode(response.body)
-        self.assertEqual(email, body_2['email'])
-        self.assertEqual(display_name, body_2['displayName'])
+        self.assertEqual(body_2['message'], "User registered successfully.")
 
     def test_registration_without_display_name(self):
         email = 'test@test.com'
-
         body = {
-          'email': email,
-          'password': 'testPassword'
+            'email': email,
+            'password': 'testPassword',
+            'dob': '2000-01-01',
+            'address': 'Dublin',
+            'phone': '+353123456789',
+            'disabilities': ['sight']
         }
 
         response = self.fetch('/registration', method='POST', body=dumps(body))
         self.assertEqual(200, response.code)
 
         body_2 = json_decode(response.body)
-        self.assertEqual(email, body_2['email'])
-        self.assertEqual(email, body_2['displayName'])
+        self.assertEqual(body_2['message'], "User registered successfully.")
 
     def test_registration_twice(self):
         body = {
-          'email': 'test@test.com',
-          'password': 'testPassword',
-          'displayName': 'testDisplayName'
+            'email': 'test@test.com',
+            'password': 'testPassword',
+            'displayName': 'testDisplayName',
+            'dob': '2000-01-01',
+            'address': 'Dublin',
+            'phone': '+353123456789',
+            'disabilities': ['sight']
         }
 
         response = self.fetch('/registration', method='POST', body=dumps(body))
